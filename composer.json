@@ -1,0 +1,44 @@
+{
+  "name": "penobit/persiandate",
+  "description": "Persian datetime package to use and manipulate Persian (jalali) datetime.",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "R8",
+      "email": "info@penobit.com"
+    }
+  ],
+  "keywords": [
+    "Penobit",
+    "Laravel",
+    "Date",
+    "Datetime",
+    "PersianDate",
+    "Jalali Date",
+    "JDate",
+    "Persian DateTime"
+  ],
+  "require": {
+    "php": "^7.0 | ^7.1 | ^7.2 | ^8.0 | ^8.1",
+    "nesbot/carbon": "^1.21 || ^2.0",
+    "beberlei/assert": "3.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Penobit\\PersianDate\\": "src"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Penobit\\PersianDate\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stablity": "dev"
+}
