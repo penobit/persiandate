@@ -1,12 +1,12 @@
 <?php
 
-if (! function_exists('jdate')) {
+if (! function_exists('persianDate')) {
 
     /**
      * @param string $str
      * @return \Penobit\PersianDate\PersianDate
      */
-    function jdate($str = null)
+    function persianDate($str = null)
     {
         return \Penobit\PersianDate\PersianDate::forge($str);
     }
