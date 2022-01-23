@@ -18,12 +18,12 @@ Run the Composer update command
 // the default timestamp is Now
 $date = \Penobit\PersianDate\PersianDate::now()
 // OR
-$date = jdate();
+$date = persianDate();
 
 // pass timestamps
 $date = PersianDate::forge(1333857600);
 // OR
-$date = jdate(1333857600);
+$date = persianDate(1333857600);
 
 // pass human readable strings to make timestamps
 $date = PersianDate::forge('last sunday');
@@ -53,7 +53,7 @@ $date = PersianDate::forge('now - 10 minutes')->ago() // 10 دقیقه پیش
 ```php
 public static function now(\DateTimeZone $timeZone = null): PersianDate
 
-$jDate = PersianDate::now();
+$persianDate = PersianDate::now();
 ```
 
 ---
@@ -61,7 +61,7 @@ $jDate = PersianDate::now();
 ```php
 public static function fromCarbon(Carbon $carbon): PersianDate
 
-$jDate = PersianDate::fromCarbon(Carbon::now());
+$persianDate = PersianDate::fromCarbon(Carbon::now());
 ```
 
 ---
@@ -69,7 +69,7 @@ $jDate = PersianDate::fromCarbon(Carbon::now());
 ```php
 public static function fromFormat(string $format, string $timestamp, \DateTimeZone$timeZone = null): PersianDate 
 
-$jDate = PersianDate::fromFormat('Y-m-d H:i:s', '1397-01-18 12:00:40');
+$persianDate = PersianDate::fromFormat('Y-m-d H:i:s', '1397-01-18 12:00:40');
 ```
 
 ---
@@ -85,11 +85,11 @@ public static function forge($timestamp, \DateTimeZone $timeZone = null): Persia
 ```php
 public static function fromDateTime($dateTime, \DateTimeZone $timeZone = null): PersianDate
 
-$jDate = PersianDate::fromDateTime(Carbon::now())
+$persianDate = PersianDate::fromDateTime(Carbon::now())
 // OR 
-$jDate = PersianDate::fromDateTime(new \DateTime());
+$persianDate = PersianDate::fromDateTime(new \DateTime());
 // OR
-$jDate = PersianDate::fromDateTime('yesterday');
+$persianDate = PersianDate::fromDateTime('yesterday');
 
 ```
 
