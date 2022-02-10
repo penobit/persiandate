@@ -4,10 +4,10 @@ use \Penobit\PersianDate\PersianDate;
 if (! function_exists('persianDate')) {
 
     /**
-     * @param string $str
+     * @param string $dateTime
      * @return \Penobit\PersianDate\PersianDate
      */
-    function persianDate($str = null) {
-        return PersianDate::forge($str);
+    function persianDate($dateTime = null) {
+        return PersianDate::forge($dateTime);
     }
 }
