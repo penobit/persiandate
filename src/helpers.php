@@ -1,4 +1,5 @@
 <?php
+use \Penobit\PersianDate\PersianDate;
 
 if (! function_exists('persianDate')) {
 
@@ -8,6 +9,6 @@ if (! function_exists('persianDate')) {
      */
     function persianDate($str = null)
     {
-        return \Penobit\PersianDate\PersianDate::forge($str);
+        return PersianDate::forge($str);
     }
 }

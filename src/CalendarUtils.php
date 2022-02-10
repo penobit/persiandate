@@ -55,12 +55,12 @@ class CalendarUtils {
         $day = $georgianDateArr[2];
         $georgianDate = new \DateTime();
         $georgianDate->setDate($year, $month, $day);
-        
-        
+
+
         return $georgianDate;
     }
 
-    /**
+        /**
      * Checks whether a Jalaali date is valid or not.
      *
      * @param int $jy
@@ -115,7 +115,6 @@ class CalendarUtils {
 
         return self::isLeapPersianDateYear($jy) ? 30 : 29;
     }
-
 
     /**
      * This function determines if the Jalaali (Persian) year is
@@ -666,6 +665,20 @@ class CalendarUtils {
         return $haystack;
     }
 
+    public static function detectFormat($dateTimeString) {
+        $format = preg_replace('/\b\d{4}-\d{1,2}-\d{1,2}\b/', 'Y-m-d', $dateTimeString);
+        $format = preg_replace('/\b\d{1,2}\/\d{1,2}\/\d{4}\b/', 'm/d/Y', $format);
+        $format = preg_replace('/\b\d{1,2}\.\d{1,2}\.\d{4}\b/', 'd.m.Y', $format);
+        $format = preg_replace('/\b\d{1,2}:\d{1,2}\b:\d{1,2}\b/', 'H:i:s', $format);
+        $format = preg_replace('/\b\d{1,2}:\d{1,2}\b/', 'H:i', $format);
+        $format = preg_replace('/\.\d{3}\b/', '.v', $format);
+
+        if (preg_match('/\d/', $format)) {
+            return false;
+        }
+
+        return $format;
+    }
 
     /**
      * @param $format
@@ -674,14 +687,14 @@ class CalendarUtils {
      */
     public static function parseFromFormat($format, $date) {
         // reverse engineer date formats
-        $keys = array(
+        /* $keys = array(
             'Y' => array('year', '\d{4}'),
             'y' => array('year', '\d{2}'),
-            'm' => array('month', '\d{2}'),
+            'm' => array('month', '\d{1,2}'),
             'n' => array('month', '\d{1,2}'),
             'M' => array('month', '[A-Z][a-z]{3}'),
             'F' => array('month', '[A-Z][a-z]{2,8}'),
-            'd' => array('day', '\d{2}'),
+            'd' => array('day', '\d{1,2}'),
             'j' => array('day', '\d{1,2}'),
             'D' => array('day', '[A-Z][a-z]{2}'),
             'l' => array('day', '[A-Z][a-z]{6,9}'),
@@ -692,6 +705,26 @@ class CalendarUtils {
             'G' => array('hour', '\d{1,2}'),
             'i' => array('minute', '\d{2}'),
             's' => array('second', '\d{2}'),
+        ); */
+
+        $keys = array(
+            'Y' => array('year', '\d{4}'),
+            'y' => array('year', '\d{2}'),
+            'm' => array('month', '\d{1,2}'),
+            'n' => array('month', '\d{1,2}'),
+            'M' => array('month', '[A-Z][a-z]{3}'),
+            'F' => array('month', '[A-Z][a-z]{2,8}'),
+            'd' => array('day', '\d{1,2}'),
+            'j' => array('day', '\d{1,2}'),
+            'D' => array('day', '[A-Z][a-z]{2}'),
+            'l' => array('day', '[A-Z][a-z]{6,9}'),
+            'u' => array('hour', '\d{1,6}'),
+            'h' => array('hour', '\d{1,2}'),
+            'H' => array('hour', '\d{1,2}'),
+            'g' => array('hour', '\d{1,2}'),
+            'G' => array('hour', '\d{1,2}'),
+            'i' => array('minute', '\d{1,2}'),
+            's' => array('second', '\d{1,2}'),
         );
 
         // convert format string to regex
@@ -775,7 +808,7 @@ class CalendarUtils {
      */
     public static function createCarbonFromFormat($format, $str, $timezone = null) {
         $dateTime = self::createDatetimeFromFormat($format, $str, $timezone);
-        
+
         return Carbon::createFromTimestamp($dateTime->getTimestamp(), $dateTime->getTimezone());
     }
 
