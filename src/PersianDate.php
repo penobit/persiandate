@@ -135,6 +135,30 @@ class PersianDate {
         return $this->month;
     }
 
+    /**
+     * get persian month's name
+     *
+     * @return string month's name
+     */
+    public function getMonthName(){
+        $months = [
+            'فروردین',
+            'اردیبهشت',
+            'خرداد',
+            'تیر',
+            'مرداد',
+            'شهریور',
+            'مهر',
+            'آبان',
+            'آذر',
+            'دی',
+            'بهمن',
+            'اسفند'
+        ];
+
+        return $months[$this->getMonth() - 1];
+    }
+
     public function isLeapYear(): bool {
         return CalendarUtils::isLeapPersianDateYear($this->getYear());
     }
