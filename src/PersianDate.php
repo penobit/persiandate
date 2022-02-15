@@ -102,15 +102,16 @@ class PersianDate {
     }
 
     public static function forge($timestamp, \DateTimeZone $timeZone = null): PersianDate {
+        if($timestamp instanceof Carbon){
+            return static::fromCarbon($timestamp);
+        }
+
         $format = CalendarUtils::detectFormat($timestamp);
 
         if($format && strtotime($timestamp) < 0) {
             return static::fromFormat($format, $timestamp, $timeZone);
         }
 
-        if($timestamp instanceof Carbon){
-            return static::fromCarbon($timestamp);
-        }
 
         return static::fromDateTime($timestamp, $timeZone);
     }
