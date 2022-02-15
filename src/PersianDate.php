@@ -102,6 +102,16 @@ class PersianDate {
     }
 
     public static function forge($timestamp, \DateTimeZone $timeZone = null): PersianDate {
+        $format = CalendarUtils::detectFormat($timestamp);
+
+        if($format && strtotime($timestamp) < 0) {
+            return static::fromFormat($format, $timestamp, $timeZone);
+        }
+
+        if($timestamp instanceof Carbon){
+            return static::fromCarbon($timestamp);
+        }
+
         return static::fromDateTime($timestamp, $timeZone);
     }
 
@@ -566,12 +576,24 @@ class PersianDate {
         return $this->format('Y-m-d');
     }
 
+    public function toDate() {
+        return $this->toDateString();
+    }
+
     public function toTimeString(){
         return $this->format('H:i:s');
     }
 
+    public function toTime() {
+        return $this->toTimeString();
+    }
+
     public function toDateTimeString(){
         return $this->toString();
+    }
+
+    public function toDateTime() {
+        return $this->toDateTimeString();
     }
 
     public function format(string $format): string {
