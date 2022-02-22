@@ -831,9 +831,3 @@ For help in building your formats, checkout the [PHP strftime() docs](http://php
 ## Notes ##
 
 The class relies on ``strtotime()`` to make sense of your strings, and ``strftime()`` to handle the formatting. Always check the ``time()`` output to see if you get false timestamps, it which case, means the class couldn't understand what you were asking it to do.
-
-## License ##
-
-- This bundle is created based on [Laravel-Date](https://github.com/swt83/laravel-date) by [Scott Travis](https://github.com/swt83) (MIT Licensed).
-- [PersianDate (Shamsi) DateTime](https://github.com/sallar/CalendarUtils) class included in the package is created by [Sallar Kaboli](http://sallar.me) and is released under the MIT License.
-- This package is created and modified by [Morteza Parvini](http://penobit.ir) for Laravel >= 5 and is released under the MIT License.
