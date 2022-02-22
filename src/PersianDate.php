@@ -102,16 +102,15 @@ class PersianDate {
     }
 
     public static function forge($timestamp, \DateTimeZone $timeZone = null): PersianDate {
-        if($timestamp instanceof Carbon){
-            return static::fromCarbon($timestamp);
-        }
-
         $format = CalendarUtils::detectFormat($timestamp);
 
         if($format && strtotime($timestamp) < 0) {
             return static::fromFormat($format, $timestamp, $timeZone);
         }
 
+        if($timestamp instanceof Carbon){
+            return static::fromCarbon($timestamp);
+        }
 
         return static::fromDateTime($timestamp, $timeZone);
     }
@@ -680,5 +679,57 @@ class PersianDate {
 
     public function getWeekOfMonth(): int {
         return ceil(($this->getDayOfWeek() + $this->day) / 7);
+    }
+
+    public function getWeekOfYear(): int {
+        return ceil($this->getDayOfYear() / 7);
+    }
+
+    public function startOfDay(): persianDate {
+        $this->hour = $this->minute = $this->second = 0;
+
+        return $this;
+    }
+
+    public function endOfDay(): persianDate {
+        $this->hour = 23;
+        $this->minute = $this->second = 59;
+
+        return $this;
+    }
+
+    public function startOfWeek(): persianDate {
+        return $this->subDays($this->getDayOfWeek())->startOfDay();
+    }
+
+    public function endOfWeek(): PersianDate {
+        return $this->addDays(6 - $this->getDayOfWeek())->endOfDay();
+    }
+
+    public function startOfMonth(): persianDate {
+        $this->day = 1;
+
+        return $this;
+    }
+
+    public function endOfMonth(): persianDate {
+        $this->day = $this->getMonthDays();
+
+        return $this;
+    }
+
+    public function startOfYear(): persianDate {
+        $this->month = $this->day = 1;
+        $this->startOfDay();
+
+        return $this;
+    }
+
+    public function endOfYear(): PersianDate {
+        $this->month = 12;
+        $this->day = $this->getMonthDays();
+        $this->endOfDay();
+
+        return $this;
     }
 }

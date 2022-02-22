@@ -744,6 +744,63 @@ $dateString = \Penobit\PersianDate\CalendarUtils::convertNumbers('۱۳۹۵-۰۲-
 \Penobit\PersianDate\CalendarUtils::createCarbonFromFormat('Y-m-d', $dateString)->format('Y-m-d'); //2016-05-8
 ```
 
+#### `startOfYear()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->startOfYear(); // 1400-01-01 00:00:00
+```
+
+#### `endOfYear()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->endOfYear(); // 1400-12-59 23:59:59
+```
+
+#### `startOfWeek()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->startOfWeek(); // 1400-11-30 00:00:00
+```
+
+#### `endOfWeek()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->endOfWeek(); // 1400-12-06 23:59:59
+```
+
+#### `startOfMonth()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->startOfMonth(); // 1400-12-01 00:00:00
+```
+
+#### `endOfMonth()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->endOfMonth(); // 1400-12-29 23:59:59
+```
+
+#### `startOfYear()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->startOfYear(); // 1400-01-01 00:00:00
+```
+
+
+#### `endOfYear()`
+
+```php
+$date = new \Penobit\PersianDate\PersianDate(); // 1400-12-02 17:50
+$date->endOfYear(); // 1400-12-29 23:59:59
+```
+
 ---
 
 #### `Carbon api-difference`
