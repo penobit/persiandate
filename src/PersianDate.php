@@ -9,37 +9,37 @@ class PersianDate {
     /**
      * @var int
      */
-    private $year;
+    public $year;
 
     /**
      * @var int
      */
-    private $month;
+    public $month;
 
     /**
      * @var int
      */
-    private $day;
+    public $day;
 
     /**
      * @var int
      */
-    private $hour;
+    public $hour;
 
     /**
      * @var int
      */
-    private $minute;
+    public $minute;
 
     /**
      * @var int
      */
-    private $second;
+    public $second;
 
     /**
      * @var \DateTimeZone
      */
-    private $timezone;
+    public $timezone;
 
     public function __construct(
         int $year,
