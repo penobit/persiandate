@@ -340,6 +340,22 @@ class PersianDate {
         return static::fromCarbon($this->toCarbon()->subDays($days));
     }
 
+    public function addWeek(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->addWeek($days));
+    }
+
+    public function addWeeks(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->addWeeks($days));
+    }
+
+    public function subWeek(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->subWeek($days));
+    }
+
+    public function subWeeks(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->subWeeks($days));
+    }
+
     /**
      * @return Carbon
      */
