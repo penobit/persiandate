@@ -40,5 +40,14 @@
       "Penobit\\PersianDate\\Tests\\": "tests/"
     }
   },
-  "minimum-stablity": "dev"
+  "minimum-stablity": "dev",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Penobit\\PersianDate\\PersianDateServiceProvider"
+      ]},
+      "alias": {
+        "CastPersianDate": "Penobit\\PersianDate\\Cast"
+      }
+  }
 }
