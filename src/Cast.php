@@ -5,7 +5,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Carbon;
 
-class PersianDate implements CastsAttributes {
+class Cast implements CastsAttributes {
     public function __construct(?string $format = null) {
         $this->format = $format;
     }
