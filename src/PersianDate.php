@@ -4,6 +4,7 @@ namespace Penobit\PersianDate;
 
 use Assert\Assertion;
 use Carbon\Carbon;
+use DateTime;
 
 class PersianDate {
     /**
@@ -101,8 +102,12 @@ class PersianDate {
         return static::fromCarbon(CalendarUtils::createCarbonFromFormat($format, $timestamp, $timeZone));
     }
 
-    public static function forge($timestamp, \DateTimeZone $timeZone = null): PersianDate {
+    public static function forge(string|Carbon|DateTime $timestamp, \DateTimeZone $timeZone = null): PersianDate {
         $format = CalendarUtils::detectFormat($timestamp);
+
+        if($timestamp instanceof DateTime) {
+            return static::fromDateTime($timestamp, $timeZone);
+        }
 
         if($format && strtotime($timestamp) < 0) {
             return static::fromFormat($format, $timestamp, $timeZone);

@@ -45,6 +45,8 @@ class Cast implements CastsAttributes {
             return null;
         }
 
-        return persianDate($value)->toCarbon();
+        $carbon = persianDate($value)->toCarbon();
+
+        return !empty($this->format) ? $carbon->format($this->format) : $value->toDateTimeString();
     }
 }
