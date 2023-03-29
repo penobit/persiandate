@@ -6,10 +6,12 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Carbon;
 
 class Cast implements CastsAttributes {
-    public $format = null;
+    public $format = 'Y-m-d H:i:s';
 
     public function __construct(?string $format = null) {
-        $this->format = $format;
+        if(!empty($format)) {
+            $this->format = $format;
+        }
     }
 
     /**
@@ -29,6 +31,26 @@ class Cast implements CastsAttributes {
         $date = persianDate(new Carbon($value));
 
         if($this->format){
+
+            if($this->format === 'auto'){
+                if($date->isToday()){
+                    return 'امروز';
+                }elseif($date->isTomorrow()){
+                    return 'فردا';
+                }elseif($date->isYesterday()){
+                    return 'دیروز';
+                }elseif($date->isBetween(
+                    persianDate()->startOfWeek(),
+                    persianDate()->endOfWeek()
+                )){
+                    return $date->format('l');
+                }elseif($date->isThisYear()){
+                    return $date->format('l d F');
+                }
+
+                return $date->format('l d F Y');
+            }
+
             return $date->format($this->format);
         }
 

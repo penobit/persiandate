@@ -102,7 +102,9 @@ class PersianDate {
         return static::fromCarbon(CalendarUtils::createCarbonFromFormat($format, $timestamp, $timeZone));
     }
 
-    public static function forge(string|Carbon|DateTime $timestamp, \DateTimeZone $timeZone = null): PersianDate {
+    public static function forge(string|Carbon|DateTime|null $timestamp, \DateTimeZone $timeZone = null): PersianDate {
+        if(empty($timestamp)) return static::fromCarbon(now());
+
         $format = CalendarUtils::detectFormat($timestamp);
 
         if($timestamp instanceof DateTime) {
@@ -466,6 +468,16 @@ class PersianDate {
         return $this->lessThanOrEqualsTo($dateTime);
     }
 
+    public function isBetween(Carbon|PersianDate $start, Carbon|PersianDate $end, bool $equal = true): bool {
+        if($start instanceof PersianDate) $start = $start->toCarbon();
+        if($end instanceof PersianDate) $end = $end->toCarbon();
+        return $this->toCarbon()->isBetween($start, $end, $equal);
+    }
+
+    public function isWeekend(): bool {
+        return $this->isSaturday() || $this->isFriday();
+    }
+
     public function isStartOfWeek(): bool {
         return $this->isSaturday();
     }
@@ -570,6 +582,10 @@ class PersianDate {
 
     public function isThursday(): bool {
         return $this->isDayOfWeek(Carbon::THURSDAY);
+    }
+
+    public function isThisYear(): bool {
+        return $this->isBetween($this->startOfYear(), $this->endOfYear());
     }
 
     public function getDayOfYear(): int {
