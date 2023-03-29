@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Casts;
+namespace Penobit\PersianDate;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Carbon;
 
 class Cast implements CastsAttributes {
+    public $format = null;
+
     public function __construct(?string $format = null) {
         $this->format = $format;
     }
