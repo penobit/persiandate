@@ -20,7 +20,7 @@
     "Persian DateTime"
   ],
   "require": {
-    "php": "^7.0 | ^7.1 | ^7.2 | ^8.0 | ^8.1",
+    "php": "^7.0 | ^7.1 | ^7.2 | ^8.0 | ^8.1 | ^8.2",
     "nesbot/carbon": "^1.21 || ^2.0",
     "beberlei/assert": "3.*"
   },
