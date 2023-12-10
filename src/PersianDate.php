@@ -389,41 +389,42 @@ class PersianDate {
         return static::fromCarbon($this->toCarbon()->addWeek($days));
     }
 
-	/**
-	 * Adds a specified number of weeks to the current PersianDate object.
-	 *
-	 * @param int $days The number of weeks to add. Default is 1.
-	 * @return PersianDate The new PersianDate object after adding the weeks.
-	 */
-	public function addWeeks(int $days = 1): PersianDate {
-		return static::fromCarbon($this->toCarbon()->addWeeks($days));
-	}
+    /**
+     * Adds a specified number of weeks to the current PersianDate object.
+     *
+     * @param int $days The number of weeks to add. Default is 1.
+     *
+     * @return PersianDate the new PersianDate object after adding the weeks
+     */
+    public function addWeeks(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->addWeeks($days));
+    }
 
-	/**
-	 * Subtracts a specified number of weeks from the current PersianDate object.
-	 *
-	 * @param int $days The number of weeks to subtract. Default is 1.
-	 * @return PersianDate The new PersianDate object after subtracting the weeks.
-	 */
-	public function subWeek(int $days = 1): PersianDate {
-		return static::fromCarbon($this->toCarbon()->subWeek($days));
-	}
+    /**
+     * Subtracts a specified number of weeks from the current PersianDate object.
+     *
+     * @param int $days The number of weeks to subtract. Default is 1.
+     *
+     * @return PersianDate the new PersianDate object after subtracting the weeks
+     */
+    public function subWeek(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->subWeek($days));
+    }
 
-	/**
-	 * Subtracts a specified number of weeks from the current PersianDate object.
-	 *
-	 * @param int $days The number of weeks to subtract. Default is 1.
-	 * @return PersianDate The new PersianDate object after subtracting the weeks.
-	 */
-	public function subWeeks(int $days = 1): PersianDate {
-		return static::fromCarbon($this->toCarbon()->subWeeks($days));
-	}
+    /**
+     * Subtracts a specified number of weeks from the current PersianDate object.
+     *
+     * @param int $days The number of weeks to subtract. Default is 1.
+     *
+     * @return PersianDate the new PersianDate object after subtracting the weeks
+     */
+    public function subWeeks(int $days = 1): PersianDate {
+        return static::fromCarbon($this->toCarbon()->subWeeks($days));
+    }
 
-	/**
-	 * Get a Carbon instance with PersianDate date and time as gregorian.
-	 *
-	 * @return Carbon
-	 */
+    /**
+     * Get a Carbon instance with PersianDate date and time as gregorian.
+     */
     public function toCarbon(): Carbon {
         $gDate = CalendarUtils::toGregorian($this->getYear(), $this->getMonth(), $this->getDay());
         $carbon = Carbon::createFromDate($gDate[0], $gDate[1], $gDate[2], $this->getTimezone());
@@ -433,23 +434,23 @@ class PersianDate {
         return $carbon;
     }
 
-	/**
-	 * Adds a specified number of days to the current PersianDate object.
-	 */
+    /**
+     * Adds a specified number of days to the current PersianDate object.
+     */
     public function addHours(int $hours = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->addHours($hours));
     }
 
-	/**
-	 * Adds a specified number of days to the current PersianDate object.
-	 */
+    /**
+     * Adds a specified number of days to the current PersianDate object.
+     */
     public function addHour(): PersianDate {
         return $this->addHours(1);
     }
 
-	/**
-	 * Subtracts a specified number of hours from the current PersianDate object.
-	 */
+    /**
+     * Subtracts a specified number of hours from the current PersianDate object.
+     */
     public function subHours(int $hours = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->subHours($hours));
     }
@@ -854,5 +855,113 @@ class PersianDate {
         $this->endOfDay();
 
         return $this;
+    }
+
+    public function diffInDays($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInDays($date, $abs);
+    }
+
+    public function diffInWeeks($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInWeeks($date, $abs);
+    }
+
+    public function diffInMonths($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInMonths($date, $abs);
+    }
+
+    public function diffInYears($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInYears($date, $abs);
+    }
+
+    public function diffInHours($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInHours($date, $abs);
+    }
+
+    public function diffInMinutes($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInMinutes($date, $abs);
+    }
+
+    public function diffInSeconds($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInSeconds($date, $abs);
+    }
+
+    public function diffInMilliseconds($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInMilliseconds($date, $abs);
+    }
+
+    public function diffInMicroseconds($date = null, $abs = true): int {
+        if (null === $date) {
+            $date = static::now();
+        }
+
+        if ($date instanceof PersianDate) {
+            $date = $date->toCarbon();
+        }
+
+        return $this->toCarbon()->diffInMicroseconds($date, $abs);
     }
 }
