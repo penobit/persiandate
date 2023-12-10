@@ -855,3 +855,4 @@ class PersianDate {
 
         return $this;
     }
+}
