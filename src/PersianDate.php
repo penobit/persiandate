@@ -4,7 +4,6 @@ namespace Penobit\PersianDate;
 
 use Assert\Assertion;
 use Carbon\Carbon;
-use DateTime;
 
 class PersianDate {
     /**
@@ -42,6 +41,9 @@ class PersianDate {
      */
     public $timezone;
 
+    /**
+     * PersianDate constructor.
+     */
     public function __construct(
         int $year,
         int $month,
@@ -51,16 +53,15 @@ class PersianDate {
         int $second = 0,
         \DateTimeZone $timezone = null
     ) {
-
         Assertion::between($year, 1000, 3000);
         Assertion::between($month, 1, 12);
         Assertion::between($day, 1, 31);
 
-        if ($month > 6) {
+        if (6 < $month) {
             Assertion::between($day, 1, 30);
         }
 
-        if (!CalendarUtils::isLeapPersianDateYear($year) && $month === 12) {
+        if (!CalendarUtils::isLeapPersianDateYear($year) && 12 === $month) {
             Assertion::between($day, 1, 29);
         }
         Assertion::between($hour, 0, 24);
@@ -76,13 +77,19 @@ class PersianDate {
         $this->timezone = $timezone;
     }
 
+    public function __toString(): string {
+        return $this->toString();
+    }
+
+    /**
+     * create a new instance from now.
+     */
     public static function now(\DateTimeZone $timeZone = null): PersianDate {
         return static::fromCarbon(Carbon::now($timeZone));
     }
 
     /**
-     * @param Carbon $carbon
-     * @return PersianDate
+     * create a new instance from carbon instance.
      */
     public static function fromCarbon(Carbon $carbon): PersianDate {
         $jDate = CalendarUtils::toPersianDate($carbon->year, $carbon->month, $carbon->day);
@@ -98,24 +105,32 @@ class PersianDate {
         );
     }
 
+    /**
+     * create a new instance from string date and format.
+     */
     public static function fromFormat(string $format, string $timestamp, \DateTimeZone $timeZone = null): PersianDate {
         return static::fromCarbon(CalendarUtils::createCarbonFromFormat($format, $timestamp, $timeZone));
     }
 
-    public static function forge(string|Carbon|DateTime|null $timestamp, \DateTimeZone $timeZone = null): PersianDate {
-        if(empty($timestamp)) return static::fromCarbon(now());
+    /**
+     * create a new instance (auto detect format).
+     */
+    public static function forge(null|Carbon|\DateTime|string $timestamp, \DateTimeZone $timeZone = null): PersianDate {
+        if (empty($timestamp)) {
+            return static::fromCarbon(now());
+        }
 
         $format = CalendarUtils::detectFormat($timestamp);
 
-        if($timestamp instanceof DateTime) {
+        if ($timestamp instanceof \DateTime) {
             return static::fromDateTime($timestamp, $timeZone);
         }
 
-        if($format && strtotime($timestamp) < 0) {
+        if ($format && strtotime($timestamp) < 0) {
             return static::fromFormat($format, $timestamp, $timeZone);
         }
 
-        if($timestamp instanceof Carbon){
+        if ($timestamp instanceof Carbon) {
             return static::fromCarbon($timestamp);
         }
 
@@ -123,9 +138,7 @@ class PersianDate {
     }
 
     /**
-     * @param \DateTimeInterface| string $dateTime
-     * @param \DateTimeZone|null $timeZone
-     * @return PersianDate
+     * @param \DateTimeInterface|string $dateTime
      */
     public static function fromDateTime($dateTime, \DateTimeZone $timeZone = null): PersianDate {
         $dateTime = is_numeric($dateTime) ? Carbon::createFromTimestamp($dateTime, $timeZone) : new Carbon($dateTime, $timeZone);
@@ -133,6 +146,9 @@ class PersianDate {
         return static::fromCarbon($dateTime);
     }
 
+    /**
+     * get persian month's days.
+     */
     public function getMonthDays() {
         if ($this->getMonth() <= 6) {
             return 31;
@@ -145,19 +161,16 @@ class PersianDate {
         return 29;
     }
 
-    /**
-     * @return int
-     */
     public function getMonth(): int {
         return $this->month;
     }
 
     /**
-     * get persian month's name
+     * get persian month's name.
      *
      * @return string month's name
      */
-    public function getMonthName(){
+    public function getMonthName() {
         $months = [
             'فروردین',
             'اردیبهشت',
@@ -170,12 +183,15 @@ class PersianDate {
             'آذر',
             'دی',
             'بهمن',
-            'اسفند'
+            'اسفند',
         ];
 
         return $months[$this->getMonth() - 1];
     }
 
+    /**
+     * returns whether the year is leap or not.
+     */
     public function isLeapYear(): bool {
         return CalendarUtils::isLeapPersianDateYear($this->getYear());
     }
@@ -187,12 +203,15 @@ class PersianDate {
         return $this->year;
     }
 
+    /**
+     * subtract months from date.
+     */
     public function subMonths(int $months = 1): PersianDate {
         Assertion::greaterOrEqualThan($months, 1);
 
         $diff = ($this->getMonth() - $months);
 
-        if ($diff >= 1) {
+        if (1 <= $diff) {
             $day = $this->getDay();
             $targetMonthDays = $this->getDaysOf($diff);
             $targetDay = $day <= $targetMonthDays ? $day : $targetMonthDays;
@@ -208,24 +227,27 @@ class PersianDate {
             );
         }
 
-        $years = abs((int)($diff / 12));
-        $date = $years > 0 ? $this->subYears($years) : clone $this;
+        $years = abs((int) ($diff / 12));
+        $date = 0 < $years ? $this->subYears($years) : clone $this;
         $diff = 12 - abs($diff % 12) - $date->getMonth();
 
-        return $diff > 0 ? $date->subYears(1)->addMonths($diff) : $date->subYears(1);
+        return 0 < $diff ? $date->subYears(1)->addMonths($diff) : $date->subYears(1);
     }
 
+    /**
+     * subtract month from date.
+     */
     public function subMonth(): PersianDate {
         return $this->subMonths(1);
     }
 
-    /**
-     * @return int
-     */
     public function getDay(): int {
         return $this->day;
     }
 
+    /**
+     * get days of a specific month.
+     */
     public function getDaysOf(int $monthNumber = 1): int {
         Assertion::between($monthNumber, 1, 12);
 
@@ -247,34 +269,28 @@ class PersianDate {
         return $months[$monthNumber];
     }
 
-    /**
-     * @return int
-     */
     public function getHour(): int {
         return $this->hour;
     }
 
-    /**
-     * @return int
-     */
     public function getMinute(): int {
         return $this->minute;
     }
 
-    /**
-     * @return int
-     */
     public function getSecond(): int {
         return $this->second;
     }
 
     /**
-     * @return \DateTimeZone|null
+     * @return null|\DateTimeZone
      */
     public function getTimezone() {
         return $this->timezone;
     }
 
+    /**
+     * subtract years to date.
+     */
     public function subYears(int $years = 1): PersianDate {
         Assertion::greaterOrEqualThan($years, 1);
 
@@ -289,35 +305,48 @@ class PersianDate {
         );
     }
 
+    /**
+     * subtract year to date.
+     *
+     * */
     public function subYear(): PersianDate {
         return $this->subYears(1);
     }
 
+    /**
+     * add months to date.
+     */
     public function addMonths(int $months = 1): PersianDate {
         Assertion::greaterOrEqualThan($months, 1);
 
-        $years = (int)($months / 12);
-        $months = (int)($months % 12);
-        $date = $years > 0 ? $this->addYears($years) : clone $this;
+        $years = (int) ($months / 12);
+        $months = (int) ($months % 12);
+        $date = 0 < $years ? $this->addYears($years) : clone $this;
 
-        while ($months > 0) {
+        while (0 < $months) {
             $nextMonth = ($date->getMonth() + 1) % 12;
-            $nextMonthDays = $date->getDaysOf($nextMonth === 0 ? 12 : $nextMonth);
+            $nextMonthDays = $date->getDaysOf(0 === $nextMonth ? 12 : $nextMonth);
             $nextMonthDay = $date->getDay() <= $nextMonthDays ? $date->getDay() : $nextMonthDays;
 
             $days = ($date->getMonthDays() - $date->getDay()) + $nextMonthDay;
 
             $date = $date->addDays($days);
-            $months--;
+            --$months;
         }
 
         return $date;
     }
 
+    /**
+     * add month to date.
+     */
     public function addMonth(): PersianDate {
         return $this->addMonths(1);
     }
 
+    /**
+     * add years to date.
+     */
     public function addYears(int $years = 1): PersianDate {
         Assertion::greaterOrEqualThan($years, 1);
 
@@ -339,33 +368,62 @@ class PersianDate {
         );
     }
 
+    /**
+     * add year to date.
+     */
     public function addYear(): PersianDate {
         return $this->addYears(1);
     }
 
+    /**
+     * add days to date.
+     */
     public function subDays(int $days = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->subDays($days));
     }
 
+    /**
+     * add day to date.
+     */
     public function addWeek(int $days = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->addWeek($days));
     }
 
-    public function addWeeks(int $days = 1): PersianDate {
-        return static::fromCarbon($this->toCarbon()->addWeeks($days));
-    }
+	/**
+	 * Adds a specified number of weeks to the current PersianDate object.
+	 *
+	 * @param int $days The number of weeks to add. Default is 1.
+	 * @return PersianDate The new PersianDate object after adding the weeks.
+	 */
+	public function addWeeks(int $days = 1): PersianDate {
+		return static::fromCarbon($this->toCarbon()->addWeeks($days));
+	}
 
-    public function subWeek(int $days = 1): PersianDate {
-        return static::fromCarbon($this->toCarbon()->subWeek($days));
-    }
+	/**
+	 * Subtracts a specified number of weeks from the current PersianDate object.
+	 *
+	 * @param int $days The number of weeks to subtract. Default is 1.
+	 * @return PersianDate The new PersianDate object after subtracting the weeks.
+	 */
+	public function subWeek(int $days = 1): PersianDate {
+		return static::fromCarbon($this->toCarbon()->subWeek($days));
+	}
 
-    public function subWeeks(int $days = 1): PersianDate {
-        return static::fromCarbon($this->toCarbon()->subWeeks($days));
-    }
+	/**
+	 * Subtracts a specified number of weeks from the current PersianDate object.
+	 *
+	 * @param int $days The number of weeks to subtract. Default is 1.
+	 * @return PersianDate The new PersianDate object after subtracting the weeks.
+	 */
+	public function subWeeks(int $days = 1): PersianDate {
+		return static::fromCarbon($this->toCarbon()->subWeeks($days));
+	}
 
-    /**
-     * @return Carbon
-     */
+	/**
+	 * Get a Carbon instance with PersianDate date and time as gregorian.
+	 *
+	 * @return Carbon
+	 */
     public function toCarbon(): Carbon {
         $gDate = CalendarUtils::toGregorian($this->getYear(), $this->getMonth(), $this->getDay());
         $carbon = Carbon::createFromDate($gDate[0], $gDate[1], $gDate[2], $this->getTimezone());
@@ -375,14 +433,23 @@ class PersianDate {
         return $carbon;
     }
 
+	/**
+	 * Adds a specified number of days to the current PersianDate object.
+	 */
     public function addHours(int $hours = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->addHours($hours));
     }
 
+	/**
+	 * Adds a specified number of days to the current PersianDate object.
+	 */
     public function addHour(): PersianDate {
         return $this->addHours(1);
     }
 
+	/**
+	 * Subtracts a specified number of hours from the current PersianDate object.
+	 */
     public function subHours(int $hours = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->subHours($hours));
     }
@@ -428,12 +495,18 @@ class PersianDate {
     }
 
     public function equalTo(Carbon|PersianDate $dateTime): bool {
-        if($dateTime instanceof PersianDate) $dateTime = $dateTime->toCarbon();
+        if ($dateTime instanceof PersianDate) {
+            $dateTime = $dateTime->toCarbon();
+        }
+
         return $this->toCarbon()->equalTo($dateTime);
     }
 
     public function greaterThan(Carbon|PersianDate $dateTime): bool {
-        if($dateTime instanceof PersianDate) $dateTime = $dateTime->toCarbon();
+        if ($dateTime instanceof PersianDate) {
+            $dateTime = $dateTime->toCarbon();
+        }
+
         return $this->toCarbon()->greaterThan($dateTime);
     }
 
@@ -442,7 +515,10 @@ class PersianDate {
     }
 
     public function lessThan(Carbon|PersianDate $dateTime): bool {
-        if($dateTime instanceof PersianDate) $dateTime = $dateTime->toCarbon();
+        if ($dateTime instanceof PersianDate) {
+            $dateTime = $dateTime->toCarbon();
+        }
+
         return $this->toCarbon()->lessThan($dateTime);
     }
 
@@ -451,7 +527,10 @@ class PersianDate {
     }
 
     public function greaterThanOrEqualsTo(Carbon|PersianDate $dateTime): bool {
-        if($dateTime instanceof PersianDate) $dateTime = $dateTime->toCarbon();
+        if ($dateTime instanceof PersianDate) {
+            $dateTime = $dateTime->toCarbon();
+        }
+
         return $this->toCarbon()->greaterThanOrEqualTo($dateTime);
     }
 
@@ -460,7 +539,10 @@ class PersianDate {
     }
 
     public function lessThanOrEqualsTo(Carbon|PersianDate $dateTime): bool {
-        if($dateTime instanceof PersianDate) $dateTime = $dateTime->toCarbon();
+        if ($dateTime instanceof PersianDate) {
+            $dateTime = $dateTime->toCarbon();
+        }
+
         return $this->toCarbon()->lessThanOrEqualTo($dateTime);
     }
 
@@ -469,8 +551,13 @@ class PersianDate {
     }
 
     public function isBetween(Carbon|PersianDate $start, Carbon|PersianDate $end, bool $equal = true): bool {
-        if($start instanceof PersianDate) $start = $start->toCarbon();
-        if($end instanceof PersianDate) $end = $end->toCarbon();
+        if ($start instanceof PersianDate) {
+            $start = $start->toCarbon();
+        }
+        if ($end instanceof PersianDate) {
+            $end = $end->toCarbon();
+        }
+
         return $this->toCarbon()->isBetween($start, $end, $equal);
     }
 
@@ -488,6 +575,7 @@ class PersianDate {
 
     public function isDayOfWeek(int $day): bool {
         Assertion::between($day, 0, 6);
+
         return $this->toCarbon()->isDayOfWeek($day);
     }
 
@@ -590,14 +678,16 @@ class PersianDate {
 
     public function getDayOfYear(): int {
         $dayOfYear = 0;
-        for ($m = 1; $m < $this->getMonth(); $m++) {
-            if ($m <= 6) {
+        for ($m = 1; $this->getMonth() > $m; ++$m) {
+            if (6 >= $m) {
                 $dayOfYear += 31;
+
                 continue;
             }
 
-            if ($m < 12) {
+            if (12 > $m) {
                 $dayOfYear += 30;
+
                 continue;
             }
         }
@@ -609,7 +699,7 @@ class PersianDate {
         return $this->format('Y-m-d H:i:s');
     }
 
-    public function toDateString(){
+    public function toDateString() {
         return $this->format('Y-m-d');
     }
 
@@ -617,7 +707,7 @@ class PersianDate {
         return $this->toDateString();
     }
 
-    public function toTimeString(){
+    public function toTimeString() {
         return $this->format('H:i:s');
     }
 
@@ -625,7 +715,7 @@ class PersianDate {
         return $this->toTimeString();
     }
 
-    public function toDateTimeString(){
+    public function toDateTimeString() {
         return $this->toString();
     }
 
@@ -635,10 +725,6 @@ class PersianDate {
 
     public function format(string $format): string {
         return CalendarUtils::strftime($format, $this->toCarbon());
-    }
-
-    public function __toString(): string {
-        return $this->toString();
     }
 
     public function ago(): string {
@@ -659,13 +745,13 @@ class PersianDate {
         $difference = $now - $time;
 
         // set descriptor
-        if ($difference < 0) {
+        if (0 > $difference) {
             $difference = abs($difference); // absolute value
             $future = true;
         }
 
         // do math
-        for ($j = 0; $difference >= $lengths[$j] and $j < count($lengths) - 1; $j++) {
+        for ($j = 0; $difference >= $lengths[$j] and count($lengths) - 1 > $j; ++$j) {
             $difference /= $lengths[$j];
         }
 
@@ -678,12 +764,12 @@ class PersianDate {
         // suffix
         $suffix = $future ? 'آینده' : 'پیش';
 
-        if($periods[3] == $unit) {
-            if($difference === 1){
+        if ($periods[3] == $unit) {
+            if (1 === $difference) {
                 return $future ? 'فردا' : 'دیروز';
             }
-        }elseif ($periods[0] == $unit && $difference < 30) {
-            return "لحظاتی پیش";
+        } elseif ($periods[0] == $unit && 30 > $difference) {
+            return 'لحظاتی پیش';
         }
 
         // return
@@ -769,4 +855,3 @@ class PersianDate {
 
         return $this;
     }
-}
