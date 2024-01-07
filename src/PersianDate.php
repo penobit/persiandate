@@ -777,6 +777,16 @@ class PersianDate {
         return trim(sprintf('%s %s %s', number_format($difference), $unit, $suffix));
     }
 
+    /**
+     * Get unix timestamp.
+     */
+    public function unix(): int {
+        return $this->toCarbon()->unix();
+    }
+
+    /**
+     * unix() method alias.
+     */
     public function getTimestamp(): int {
         return $this->toCarbon()->getTimestamp();
     }
