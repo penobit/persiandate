@@ -77,6 +77,11 @@ class PersianDate {
         $this->timezone = $timezone;
     }
 
+    /**
+     * Converts the PersianDate object to string.
+     *
+     * @return string the string representation of the PersianDate object
+     */
     public function __toString(): string {
         return $this->toString();
     }
@@ -117,7 +122,7 @@ class PersianDate {
      */
     public static function forge(null|Carbon|\DateTime|string $timestamp, \DateTimeZone $timeZone = null): PersianDate {
         if (empty($timestamp)) {
-            return static::fromCarbon(now());
+            return static::fromCarbon(new Carbon());
         }
 
         $format = CalendarUtils::detectFormat($timestamp);
@@ -161,7 +166,13 @@ class PersianDate {
         return 29;
     }
 
+    /**
+     * Get the month.
+     *
+     * @return int the month
+     */
     public function getMonth(): int {
+        // Returns the month of the date.
         return $this->month;
     }
 
@@ -241,6 +252,11 @@ class PersianDate {
         return $this->subMonths(1);
     }
 
+    /**
+     * Get the day of the month.
+     *
+     * @return int the day of the month (1-31)
+     */
     public function getDay(): int {
         return $this->day;
     }
@@ -269,15 +285,33 @@ class PersianDate {
         return $months[$monthNumber];
     }
 
+    /**
+     * Get the hour of the date.
+     *
+     * @return int the hour
+     */
     public function getHour(): int {
+        // Returns the hour of the date.
         return $this->hour;
     }
 
+    /**
+     * Get the minute of the date.
+     *
+     * @return int the minute
+     */
     public function getMinute(): int {
+        // Returns the minute of the date.
         return $this->minute;
     }
 
+    /**
+     * Get the second of the date.
+     *
+     * @return int the second
+     */
     public function getSecond(): int {
+        // Returns the second of the date.
         return $this->second;
     }
 
@@ -455,176 +489,239 @@ class PersianDate {
         return static::fromCarbon($this->toCarbon()->subHours($hours));
     }
 
+    /**
+     * Subtracts 1 hour from the current PersianDate object.
+     *
+     * @return PersianDate the new PersianDate object after subtracting 1 hour
+     */
     public function subHour(): PersianDate {
         return $this->subHours(1);
     }
 
+    /**
+     * Adds a specified number of minutes to the current PersianDate object.
+     */
     public function addMinutes(int $minutes = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->addMinutes($minutes));
     }
 
+    /**
+     * Adds 1 minute to the current PersianDate object.
+     *
+     * @return PersianDate the new PersianDate object after adding 1 minute
+     */
     public function addMinute(): PersianDate {
         return $this->addMinutes(1);
     }
 
+    /**
+     * Subtracts a specified number of minutes from the current PersianDate object.
+     */
     public function subMinutes(int $minutes = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->subMinutes($minutes));
     }
 
+    /**
+     * Subtracts 1 minute from the current PersianDate object.
+     *
+     * @return PersianDate the new PersianDate object after subtracting 1 minute
+     */
     public function subMinute(): PersianDate {
         return $this->subMinutes(1);
     }
 
+    /**
+     * Adds a specified number of seconds to the current PersianDate object.
+     */
     public function addSeconds(int $secs = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->addSeconds($secs));
     }
 
+    /**
+     * Adds 1 second to the current PersianDate object.
+     *
+     * @return PersianDate the new PersianDate object after adding 1 second
+     */
     public function addSecond(): PersianDate {
         return $this->addSeconds(1);
     }
 
+    /**
+     * Subtracts a specified number of seconds from the current PersianDate object.
+     */
     public function subSeconds(int $secs = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->subSeconds($secs));
     }
 
+    /**
+     * Subtracts 1 second from the current PersianDate object.
+     *
+     * @return PersianDate the new PersianDate object after subtracting 1 second
+     */
     public function subSecond(): PersianDate {
         return $this->subSeconds(1);
     }
 
+    /**
+     * Checks if the current PersianDate object is equal to the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if both dates are equal, false otherwise
+     */
     public function equalsTo(Carbon|PersianDate $dateTime): bool {
         return $this->equalTo($dateTime);
     }
 
+    /**
+     * Checks if the current PersianDate object is equal to the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if both dates are equal, false otherwise
+     */
     public function equalTo(Carbon|PersianDate $dateTime): bool {
         if ($dateTime instanceof PersianDate) {
             $dateTime = $dateTime->toCarbon();
         }
 
+        // Check if the current PersianDate object is equal to the given one.
         return $this->toCarbon()->equalTo($dateTime);
     }
 
+    /**
+     * Checks if the current PersianDate object is greater than the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is greater, false otherwise
+     */
     public function greaterThan(Carbon|PersianDate $dateTime): bool {
         if ($dateTime instanceof PersianDate) {
             $dateTime = $dateTime->toCarbon();
         }
 
+        // Check if the current PersianDate object is greater than the given one.
         return $this->toCarbon()->greaterThan($dateTime);
     }
 
+    /**
+     * Checks if the current PersianDate object is after the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is after, false otherwise
+     */
     public function isAfter(Carbon|PersianDate $dateTime): bool {
         return $this->greaterThan($dateTime);
     }
 
+    /**
+     * Checks if the current PersianDate object is less than the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is less, false otherwise
+     */
     public function lessThan(Carbon|PersianDate $dateTime): bool {
         if ($dateTime instanceof PersianDate) {
             $dateTime = $dateTime->toCarbon();
         }
 
+        // Check if the current PersianDate object is less than the given one.
         return $this->toCarbon()->lessThan($dateTime);
     }
 
+    /**
+     * Checks if the current PersianDate object is before the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is before, false otherwise
+     */
     public function isBefore(Carbon|PersianDate $dateTime): bool {
         return $this->lessThan($dateTime);
     }
 
+    /**
+     * Checks if the current PersianDate object is greater than or equal to the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is greater than or equal to, false otherwise
+     */
+    public function isAfterOrEqualsTo(Carbon|PersianDate $dateTime): bool {
+        return $this->greaterThanOrEqualsTo($dateTime);
+    }
+
+    /**
+     * Checks if the current PersianDate object is greater than or equal to the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is greater than or equal to, false otherwise
+     */
     public function greaterThanOrEqualsTo(Carbon|PersianDate $dateTime): bool {
         if ($dateTime instanceof PersianDate) {
             $dateTime = $dateTime->toCarbon();
         }
 
+        // Check if the current PersianDate object is greater than or equal to the given one.
         return $this->toCarbon()->greaterThanOrEqualTo($dateTime);
     }
 
-    public function isAfterOrEqualsTo(Carbon|PersianDate $dateTime): bool {
-        return $this->greaterThanOrEqualsTo($dateTime);
-    }
-
+    /**
+     * Checks if the current PersianDate object is less than or equal to the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is less than or equal to, false otherwise
+     */
     public function lessThanOrEqualsTo(Carbon|PersianDate $dateTime): bool {
-        if ($dateTime instanceof PersianDate) {
+        if ($dateTime instanceof PersianDate) { // Convert PersianDate to Carbon
             $dateTime = $dateTime->toCarbon();
         }
 
-        return $this->toCarbon()->lessThanOrEqualTo($dateTime);
+        return $this->toCarbon()->lessThanOrEqualTo($dateTime); // Compare with Carbon object
     }
 
+    /**
+     * Checks if the current PersianDate object is before or equals to the given one.
+     *
+     * @param Carbon|PersianDate $dateTime the date/time to compare with
+     *
+     * @return bool true if the current PersianDate object is before or equals to, false otherwise
+     */
     public function isBeforenOrEqualsTo(Carbon|PersianDate $dateTime): bool {
-        return $this->lessThanOrEqualsTo($dateTime);
+        return $this->lessThanOrEqualsTo($dateTime); // Use the lessThanOrEqualsTo method
     }
 
+    /**
+     * Checks if the current PersianDate object is between the given start and end date/time.
+     *
+     * @param Carbon|PersianDate $start the start date/time to compare with
+     * @param Carbon|PersianDate $end the end date/time to compare with
+     * @param bool $equal whether to include the start and end date/time in the comparison or not
+     *
+     * @return bool true if the current PersianDate object is between the start and end date/time, false otherwise
+     */
     public function isBetween(Carbon|PersianDate $start, Carbon|PersianDate $end, bool $equal = true): bool {
-        if ($start instanceof PersianDate) {
+        if ($start instanceof PersianDate) { // Convert PersianDate to Carbon
             $start = $start->toCarbon();
         }
-        if ($end instanceof PersianDate) {
+        if ($end instanceof PersianDate) { // Convert PersianDate to Carbon
             $end = $end->toCarbon();
         }
 
-        return $this->toCarbon()->isBetween($start, $end, $equal);
+        return $this->toCarbon()->isBetween($start, $end, $equal); // Compare with Carbon object
     }
 
-    public function isWeekend(): bool {
-        return $this->isSaturday() || $this->isFriday();
-    }
-
-    public function isStartOfWeek(): bool {
-        return $this->isSaturday();
-    }
-
-    public function isSaturday(): bool {
-        return $this->isDayOfWeek(Carbon::SATURDAY);
-    }
-
-    public function isDayOfWeek(int $day): bool {
-        Assertion::between($day, 0, 6);
-
-        return $this->toCarbon()->isDayOfWeek($day);
-    }
-
-    public function isEndOfWeek(): bool {
-        return $this->isFriday();
-    }
-
-    public function isFriday(): bool {
-        return $this->isDayOfWeek(Carbon::FRIDAY);
-    }
-
-    public function isToday(): bool {
-        return $this->toCarbon()->isToday();
-    }
-
-    public function isTomorrow(): bool {
-        return $this->toCarbon()->isTomorrow();
-    }
-
-    public function isYesterday(): bool {
-        return $this->toCarbon()->isYesterday();
-    }
-
-    public function isFuture(): bool {
-        return $this->toCarbon()->isFuture();
-    }
-
-    public function isPast(): bool {
-        return $this->toCarbon()->isPast();
-    }
-
-    public function toArray(): array {
-        return [
-            'year' => $this->year,
-            'month' => $this->month,
-            'day' => $this->day,
-            'dayOfWeek' => $this->getDayOfWeek(),
-            'dayOfYear' => $this->getDayOfYear(),
-            'hour' => $this->hour,
-            'minute' => $this->minute,
-            'second' => $this->second,
-            'micro' => $this->toCarbon()->micro,
-            'timestamp' => $this->toCarbon()->timestamp,
-            'formatted' => $this->toString(),
-            'timezone' => $this->timezone,
-        ];
-    }
-
+    /**
+     * Get the day of the week.
+     *
+     * @return int The day of the week.
+     *             0 for Saturday, 1 for Sunday, 2 for Monday, 3 for Tuesday, 4 for Wednesday, 5 for Thursday, 6 for Friday.
+     */
     public function getDayOfWeek(): int {
         if ($this->isSaturday()) {
             return 0;
@@ -653,30 +750,85 @@ class PersianDate {
         return 6;
     }
 
+    /**
+     * Check if it's a specific day of week.
+     *
+     * @param int $dayOfWeek the day of week (0 for Saturday, 1 for Sunday, 2 for Monday, 3 for Tuesday, 4 for Wednesday, 5 for Thursday, 6 for Friday)
+     *
+     * @return bool true if it's a specific day of week, false otherwise
+     */
+    public function isDayOfWeek(int $dayOfWeek): bool {
+        return $this->getDayOfWeek() === $dayOfWeek;
+    }
+
+    /**
+     * Check if it's Saturday.
+     *
+     * @return bool true if it's Saturday, false otherwise
+     */
+    public function isSaturday(): bool {
+        return $this->isDayOfWeek(Carbon::SATURDAY);
+    }
+
+    /**
+     * Check if it's Sunday.
+     *
+     * @return bool true if it's Sunday, false otherwise
+     */
     public function isSunday(): bool {
         return $this->isDayOfWeek(Carbon::SUNDAY);
     }
 
+    /**
+     * Check if it's Monday.
+     *
+     * @return bool true if it's Monday, false otherwise
+     */
     public function isMonday(): bool {
         return $this->isDayOfWeek(Carbon::MONDAY);
     }
 
+    /**
+     * Check if it's Tuesday.
+     *
+     * @return bool true if it's Tuesday, false otherwise
+     */
     public function isTuesday(): bool {
         return $this->isDayOfWeek(Carbon::TUESDAY);
     }
 
+    /**
+     * Check if it's Wednesday.
+     *
+     * @return bool true if it's Wednesday, false otherwise
+     */
     public function isWednesday(): bool {
         return $this->isDayOfWeek(Carbon::WEDNESDAY);
     }
 
+    /**
+     * Check if it's Thursday.
+     *
+     * @return bool true if it's Thursday, false otherwise
+     */
     public function isThursday(): bool {
         return $this->isDayOfWeek(Carbon::THURSDAY);
     }
 
+    /**
+     * Check if it's this year.
+     *
+     * @return bool true if it's this year, false otherwise
+     */
     public function isThisYear(): bool {
         return $this->isBetween($this->startOfYear(), $this->endOfYear());
     }
 
+    /**
+     * Get the day of the year.
+     *
+     * @return int the day of the year
+     */
     public function getDayOfYear(): int {
         $dayOfYear = 0;
         for ($m = 1; $this->getMonth() > $m; ++$m) {
@@ -696,38 +848,86 @@ class PersianDate {
         return $dayOfYear + $this->getDay();
     }
 
+    /**
+     * Convert the PersianDate object to a string.
+     *
+     * @return string the string representation of the PersianDate object in the format 'Y-m-d H:i:s'
+     */
     public function toString(): string {
         return $this->format('Y-m-d H:i:s');
     }
 
-    public function toDateString() {
+    /**
+     * Convert the PersianDate object to a string representation of a date.
+     *
+     * @return string the string representation of the PersianDate object in the format 'Y-m-d'
+     */
+    public function toDateString(): string {
         return $this->format('Y-m-d');
     }
 
-    public function toDate() {
+    /**
+     * An alias for toDateString().
+     *
+     * @return string the string representation of the PersianDate object in the format 'Y-m-d'
+     */
+    public function toDate(): string {
         return $this->toDateString();
     }
 
-    public function toTimeString() {
+    /**
+     * Convert the PersianDate object to a string representation of a time.
+     *
+     * @return string the string representation of the PersianDate object in the format 'H:i:s'
+     */
+    public function toTimeString(): string {
         return $this->format('H:i:s');
     }
 
-    public function toTime() {
+    /**
+     * An alias for toTimeString().
+     *
+     * @return string the string representation of the PersianDate object in the format 'H:i:s'
+     */
+    public function toTime(): string {
         return $this->toTimeString();
     }
 
-    public function toDateTimeString() {
+    /**
+     * Convert the PersianDate object to a string representation of a date and time.
+     *
+     * @return string the string representation of the PersianDate object in the format 'Y-m-d H:i:s'
+     */
+    public function toDateTimeString(): string {
         return $this->toString();
     }
 
-    public function toDateTime() {
+    /**
+     * An alias for toDateTimeString().
+     *
+     * @return string the string representation of the PersianDate object in the format 'Y-m-d H:i:s'
+     */
+    public function toDateTime(): string {
         return $this->toDateTimeString();
     }
 
+    /**
+     * Format the PersianDate object using strftime formatting.
+     *
+     * @param string $format the format string to use
+     *
+     * @return string the formatted string
+     */
     public function format(string $format): string {
         return CalendarUtils::strftime($format, $this->toCarbon());
     }
 
+    /**
+     * Get a human-readable string representing how much time has passed since
+     * this PersianDate object.
+     *
+     * @return string the string representation of the difference
+     */
     public function ago(): string {
         $future = false;
         $now = time();
@@ -791,74 +991,151 @@ class PersianDate {
         return $this->toCarbon()->getTimestamp();
     }
 
+    /**
+     * Get the next week PersianDate object.
+     *
+     * @return PersianDate the next week PersianDate object
+     */
     public function getNextWeek(): PersianDate {
         return $this->addDays(7);
     }
 
+    /**
+     * Add days to the PersianDate object and return a new instance.
+     *
+     * @param int $days The number of days to add. Default is 1.
+     *
+     * @return PersianDate the new PersianDate object
+     */
     public function addDays(int $days = 1): PersianDate {
         return static::fromCarbon($this->toCarbon()->addDays($days));
     }
 
+    /**
+     * Add 1 day to the PersianDate object and return a new instance.
+     *
+     * @return PersianDate the new PersianDate object
+     */
     public function addDay(): PersianDate {
         return $this->addDays(1);
     }
 
+    /**
+     * Subtract 1 day from the PersianDate object and return a new instance.
+     *
+     * @return PersianDate the new PersianDate object
+     */
     public function subDay(): PersianDate {
         return $this->subDays(1);
     }
 
+    /**
+     * Get the next month PersianDate object.
+     *
+     * @return PersianDate the next month PersianDate object
+     */
     public function getNextMonth(): PersianDate {
         return $this->addMonths(1);
     }
 
+    /**
+     * Get the week number of the month.
+     *
+     * @return int the week number of the month
+     */
     public function getWeekOfMonth(): int {
         return ceil(($this->getDayOfWeek() + $this->day) / 7);
     }
 
+    /**
+     * Get the week number of the year.
+     *
+     * @return int the week number of the year
+     */
     public function getWeekOfYear(): int {
         return ceil($this->getDayOfYear() / 7);
     }
 
-    public function startOfDay(): persianDate {
+    /**
+     * Set the PersianDate object to the start of the day.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
+    public function startOfDay(): PersianDate {
         $this->hour = $this->minute = $this->second = 0;
 
         return $this;
     }
 
-    public function endOfDay(): persianDate {
+    /**
+     * Set the PersianDate object to the end of the day.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
+    public function endOfDay(): PersianDate {
         $this->hour = 23;
         $this->minute = $this->second = 59;
 
         return $this;
     }
 
-    public function startOfWeek(): persianDate {
+    /**
+     * Set the PersianDate object to the start of the week.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
+    public function startOfWeek(): PersianDate {
         return $this->subDays($this->getDayOfWeek())->startOfDay();
     }
 
+    /**
+     * Set the PersianDate object to the end of the week.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
     public function endOfWeek(): PersianDate {
         return $this->addDays(6 - $this->getDayOfWeek())->endOfDay();
     }
 
-    public function startOfMonth(): persianDate {
+    /**
+     * Set the PersianDate object to the start of the month.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
+    public function startOfMonth(): PersianDate {
         $this->day = 1;
 
         return $this;
     }
 
-    public function endOfMonth(): persianDate {
+    /**
+     * Set the PersianDate object to the end of the month.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
+    public function endOfMonth(): PersianDate {
         $this->day = $this->getMonthDays();
 
         return $this;
     }
 
-    public function startOfYear(): persianDate {
+    /**
+     * Set the PersianDate object to the start of the year.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
+    public function startOfYear(): PersianDate {
         $this->month = $this->day = 1;
         $this->startOfDay();
 
         return $this;
     }
 
+    /**
+     * Set the PersianDate object to the end of the year.
+     *
+     * @return PersianDate the modified PersianDate object
+     */
     public function endOfYear(): PersianDate {
         $this->month = 12;
         $this->day = $this->getMonthDays();
@@ -867,6 +1144,14 @@ class PersianDate {
         return $this;
     }
 
+    /**
+     * Get the difference in days between the PersianDate objects.
+     *
+     * @param mixed $date The date to compare against. Default is the current PersianDate object.
+     * @param bool $abs whether to return the absolute value of the difference
+     *
+     * @return int the difference in days
+     */
     public function diffInDays($date = null, $abs = true): int {
         if (null === $date) {
             $date = static::now();
@@ -877,101 +1162,5 @@ class PersianDate {
         }
 
         return $this->toCarbon()->diffInDays($date, $abs);
-    }
-
-    public function diffInWeeks($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInWeeks($date, $abs);
-    }
-
-    public function diffInMonths($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInMonths($date, $abs);
-    }
-
-    public function diffInYears($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInYears($date, $abs);
-    }
-
-    public function diffInHours($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInHours($date, $abs);
-    }
-
-    public function diffInMinutes($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInMinutes($date, $abs);
-    }
-
-    public function diffInSeconds($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInSeconds($date, $abs);
-    }
-
-    public function diffInMilliseconds($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInMilliseconds($date, $abs);
-    }
-
-    public function diffInMicroseconds($date = null, $abs = true): int {
-        if (null === $date) {
-            $date = static::now();
-        }
-
-        if ($date instanceof PersianDate) {
-            $date = $date->toCarbon();
-        }
-
-        return $this->toCarbon()->diffInMicroseconds($date, $abs);
     }
 }
